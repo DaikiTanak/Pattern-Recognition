@@ -124,6 +124,11 @@ class EM_GMM():
                 a += cluster.pi * prob
             loglikelihood += np.log(a)
         print("log likelihood : " + str(loglikelihood))
+
+        if(loglikelihood - self.lh < 0.0001):
+            print("finish.")
+            
+        self.lh = loglikelihood
         return loglikelihood
 
 
