@@ -9,7 +9,7 @@ class EM_cluster():
         self.mu = mu
         self.sigma = sigma
         self.pi = pi
-        self.dim = 2
+
 
     #現在のパラメータからxに対する事後確率を計算する
     def prob(self, x):
@@ -25,11 +25,13 @@ class EM_GMM():
     def __init__(self, n_clusters, X):
         self.n_clusters = n_clusters
         self.data = X
+        self.sample_size, self.dim = X.shape
 
         cluster_list = []
         for i in range(n_clusters):
             mu = X[i]
-            sigma = np.matrix([[1, 0, 0],[0,1,0], [0, 0, 1]])
+            #sigma = np.matrix([[1, 0, 0],[0,1,0], [0, 0, 1]])
+            sigma = np.matrix(np.eye(self.dim))
             cluster = EM_cluster(mu, sigma, 1/n_clusters)
             cluster_list.append(cluster)
         self.cluster_list = cluster_list
@@ -96,7 +98,8 @@ class EM_GMM():
 
             """ update sigma """
             n = 0
-            new_sigma = np.matrix([[0,0,0], [0,0,0],[0,0,0]])
+            new_sigma = np.matrix(np.eye(self.dim))
+
             for x_n in self.data:
                 gamma_nk = gamma_for_cluster[n]
                 dot = np.dot((x_n - cluster.mu).T, (x_n - cluster.mu))
@@ -132,7 +135,7 @@ if(__name__ == "__main__"):
     EM = EM_GMM(3, X)
 
     for i in range(100):
-        print(i+1, "iterations ###################")
+        print(i+1, "iterations -----------------------------")
         EM.E_step()
         EM.M_step()
         EM.get_loglikelihood()
