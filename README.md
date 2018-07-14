@@ -1,4 +1,4 @@
 # Pattern-Recognition
 
-##EM.py
+##　EM.py
 EMアルゴリズムの実装になっています。
